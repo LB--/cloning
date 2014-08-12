@@ -32,17 +32,20 @@ namespace resplunk
 		struct CloneImplementor
 		: virtual Cloneable<Wrapper, Args...>
 		{
+			using C = DerivedT;
 			using Wrapper_t = Wrapper<DerivedT, Args...>;
 			using CloneImplementor_t = CloneImplementor;
-			CloneImplementor() = default;
 
-			static auto Clone(DerivedT const &c) noexcept
+			static auto Clone(C const &c) noexcept
 			-> Wrapper_t
 			{
-				return Wrapper_t{dynamic_cast<DerivedT *>(c.clone())};
+				return Wrapper_t{dynamic_cast<C *>(c.clone())};
 			}
 
 		private:
+			CloneImplementor() = default;
+			friend DerivedT;
+
 			virtual CloneImplementor_t *clone() const noexcept override = 0;
 		};
 	}
