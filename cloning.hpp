@@ -27,6 +27,8 @@ namespace resplunk
 
 		private:
 			virtual Cloneable *clone() const noexcept = 0;
+			template<typename DerivedT, template<typename T, typename...> typename Wrapper, typename... Args>
+			friend struct CloneImplementor;
 		};
 		template<typename DerivedT, template<typename T, typename...> typename Wrapper = std::unique_ptr, typename... Args>
 		struct CloneImplementor
@@ -45,8 +47,6 @@ namespace resplunk
 		private:
 			CloneImplementor() = default;
 			friend DerivedT;
-
-			virtual CloneImplementor_t *clone() const noexcept override = 0;
 		};
 	}
 }
