@@ -8,10 +8,8 @@ namespace resplunk
 {
 	namespace util
 	{
-		template<template<typename T, typename...> typename Wrapper = std::unique_ptr, typename... Args>
 		struct Cloneable
 		{
-			using Wrapper_t = Wrapper<Cloneable, Args...>;
 			Cloneable() = default;
 			Cloneable(Cloneable const &) = default;
 			Cloneable &operator=(Cloneable const &) = delete;
@@ -19,34 +17,35 @@ namespace resplunk
 			Cloneable &operator=(Cloneable &&) = delete;
 			virtual ~Cloneable() = default;
 
+			template<template<typename...> typename Wrapper = std::unique_ptr, typename... Args>
 			static auto Clone(Cloneable const &c) noexcept
-			-> Wrapper_t
+			-> Wrapper<Cloneable, Args...>
 			{
-				return c.clone();
+				return Wrapper<Cloneable, Args...>{c.clone()};
 			}
 
 		private:
-			virtual Cloneable *clone() const noexcept = 0;
-			template<typename DerivedT, template<typename T, typename...> typename Wrapper, typename... Args>
+			template<typename DerivedT>
 			friend struct CloneImplementor;
+			virtual Cloneable *clone() const noexcept = 0;
 		};
-		template<typename DerivedT, template<typename T, typename...> typename Wrapper = std::unique_ptr, typename... Args>
+		template<typename DerivedT>
 		struct CloneImplementor
-		: virtual Cloneable<Wrapper, Args...>
+		: virtual Cloneable
 		{
-			using C = DerivedT;
-			using Wrapper_t = Wrapper<DerivedT, Args...>;
+			using Cloneable_t = DerivedT;
 			using CloneImplementor_t = CloneImplementor;
 
-			static auto Clone(C const &c) noexcept
-			-> Wrapper_t
+			template<template<typename...> typename Wrapper = std::unique_ptr, typename... Args>
+			static auto Clone(Cloneable_t const &c) noexcept
+			-> Wrapper<Cloneable_t, Args...>
 			{
-				return Wrapper_t{dynamic_cast<C *>(c.clone())};
+				return Wrapper<Cloneable_t, Args...>{dynamic_cast<Cloneable_t *>(c.clone())};
 			}
 
 		private:
 			CloneImplementor() = default;
-			friend DerivedT;
+			friend Cloneable_t;
 		};
 	}
 }
