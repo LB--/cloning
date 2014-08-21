@@ -37,9 +37,10 @@ namespace resplunk
 			using CloneImplementor_t = CloneImplementor;
 
 			template<template<typename...> typename Wrapper = std::unique_ptr, typename... Args>
-			static auto Clone(Cloneable_t const &c) noexcept
+			static auto Clone(Cloneable_t const &ct) noexcept
 			-> Wrapper<Cloneable_t, Args...>
 			{
+				Cloneable const &c = ct;
 				return Wrapper<Cloneable_t, Args...>{dynamic_cast<Cloneable_t *>(c.clone())};
 			}
 
