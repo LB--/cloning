@@ -48,6 +48,33 @@ namespace resplunk
 			CloneImplementor() = default;
 			friend Cloneable_t;
 		};
+
+		template<typename CloneableT, template<typename...> typename Wrapper = std::unique_ptr, typename... Args>
+		struct ClonePtr final
+		: Wrapper<CloneableT, Args...>
+		{
+			static_assert(std::is_base_of<Cloneable, CloneableT>::value);
+			using Cloneable_t = CloneableT;
+			using ClonePtr_t = ClonePtr;
+			using Wrapper_t = Wrapper<CloneableT, Args...>;
+			using Wrapper_t::Wrapper_t;
+			ClonePtr(ClonePtr const &from) noexcept
+			: Wrapper_t{std::move(Cloneable_t::Clone<Wrapper, Args...>(*from))}
+			{
+			}
+			ClonePtr &operator=(ClonePtr const &from) noexcept
+			{
+				return Wrapper_t::operator=(std::move(Cloneable_t::Clone<Wrapper, Args...>(*from)));
+			}
+			ClonePtr(Cloneable_t const &from) noexcept
+			: Wrapper_t{std::move(Cloneable_t::Clone<Wrapper, Args...>(from))}
+			{
+			}
+			ClonePtr &operator=(Cloneable_t const &from) noexcept
+			{
+				return Wrapper_t::operator=(std::move(Cloneable_t::Clone<Wrapper, Args...>(from)));
+			}
+		};
 	}
 }
 
