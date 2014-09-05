@@ -59,7 +59,7 @@ namespace resplunk
 			using Wrapper_t = Wrapper<CloneableT, Args...>;
 			using Wrapper_t::Wrapper_t;
 			ClonePtr(ClonePtr const &from) noexcept
-			: Wrapper_t{std::move(Cloneable_t::Clone<Wrapper, Args...>(*from))}
+			: Wrapper_t{std::move(Cloneable_t::template Clone<Wrapper, Args...>(*from))}
 			{
 			}
 			ClonePtr &operator=(ClonePtr const &from) noexcept
