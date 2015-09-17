@@ -1,12 +1,12 @@
-#ifndef resplunk_util_Cloneable_HeaderPlusPlus
-#define resplunk_util_Cloneable_HeaderPlusPlus
+#ifndef LB_cloning_cloning_HeaderPlusPlus
+#define LB_cloning_cloning_HeaderPlusPlus
 
 #include <memory>
 #include <type_traits>
 
-namespace resplunk
+namespace LB
 {
-	namespace util
+	namespace cloning
 	{
 		struct Cloneable
 		{
