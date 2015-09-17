@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3)
 
-project(json)
+project(cloning)
 
 ADD_BII_TARGETS()
 
