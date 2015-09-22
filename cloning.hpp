@@ -38,7 +38,6 @@ namespace LB
 
 			template<template<typename...> typename Wrapper = std::unique_ptr, typename... Args>
 			static auto Clone(Cloneable_t const &ct) noexcept
-			-> Wrapper<Cloneable_t, Args...>
 			{
 				Cloneable const &c = ct;
 				return Wrapper<Cloneable_t, Args...>{dynamic_cast<Cloneable_t *>(c.clone())};
@@ -49,30 +48,30 @@ namespace LB
 			friend Cloneable_t;
 		};
 
-		template<typename CloneableT, template<typename...> typename Wrapper = std::unique_ptr, typename... Args>
+		template<typename CloneableT>
 		struct ClonePtr final
-		: Wrapper<CloneableT, Args...>
+		: std::unique_ptr<CloneableT>
 		{
 			static_assert(std::is_base_of<Cloneable, CloneableT>::value, "CloneableT must derive from Cloneable");
 			using Cloneable_t = CloneableT;
 			using ClonePtr_t = ClonePtr;
-			using Wrapper_t = Wrapper<CloneableT, Args...>;
+			using Wrapper_t = std::unique_ptr<CloneableT>;
 			using Wrapper_t::Wrapper_t;
 			ClonePtr(ClonePtr const &from) noexcept
-			: Wrapper_t{std::move(Cloneable_t::template Clone<Wrapper, Args...>(*from))}
+			: Wrapper_t{std::move(Cloneable_t::template Clone<>(*from))}
 			{
 			}
 			ClonePtr &operator=(ClonePtr const &from) noexcept
 			{
-				return Wrapper_t::operator=(std::move(Cloneable_t::template Clone<Wrapper, Args...>(*from)));
+				return Wrapper_t::operator=(std::move(Cloneable_t::template Clone<>(*from)));
 			}
 			ClonePtr(Cloneable_t const &from) noexcept
-			: Wrapper_t{std::move(Cloneable_t::template Clone<Wrapper, Args...>(from))}
+			: Wrapper_t{std::move(Cloneable_t::template Clone<>(from))}
 			{
 			}
 			ClonePtr &operator=(Cloneable_t const &from) noexcept
 			{
-				return Wrapper_t::operator=(std::move(Cloneable_t::template Clone<Wrapper, Args...>(from)));
+				return Wrapper_t::operator=(std::move(Cloneable_t::template Clone<>(from)));
 			}
 		};
 	}

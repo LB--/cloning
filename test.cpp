@@ -19,7 +19,7 @@ int main()
 {
 	Test t;
 	auto c1 = Test::Clone<>(t);
-//	auto c2 = Test::Clone<std::shared_ptr>(t);
-//	auto c3 = Test::Clone<LB::cloning::ClonePtr, Test>(*c1);
-//	auto c4 = c3;
+	auto c2 = Test::Clone<std::shared_ptr>(t);
+	auto c3 = Test::Clone<LB::cloning::ClonePtr>(*c1);
+	auto c4 = c3;
 }
