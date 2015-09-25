@@ -1,4 +1,4 @@
-cloning [![Build Status](https://webapi.biicode.com/v1/badges/LB/LB/cloning/master)](https://www.biicode.com/LB/cloning)
+cloning [![Build Status](https://webapi.biicode.com/v1/badges/LB/LB/cloning/master)](https://www.biicode.com/LB/cloning) [![travis](https://travis-ci.org/LB--/cloning.svg?branch=cloning)](https://travis-ci.org/LB--/cloning)
 =======
 This library is my personal take on the clone pattern. `CloneImplementor<>` uses the CRTP to help reduce boilerplate. `ClonePtr` is a copyable smart pointer for cloneable types.
 
