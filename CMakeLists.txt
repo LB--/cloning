@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.4)
 
-project(LB::cloning
+project(LB/cloning
 	VERSION 0.0.0
 	LANGUAGES CXX
 )
+set(CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}/${PROJECT_VERSION})
 
 add_library(cloning INTERFACE)
 #set_property(TARGET cloning PROPERTY CXX_STANDARD 17)
@@ -24,13 +25,13 @@ install(
 )
 install(
 	EXPORT cloning
-	DESTINATION cmake/LB/cloning
+	DESTINATION cmake/LB
 	NAMESPACE LB::
 )
 install(
 	FILES
 		"cloning.hpp"
-	DESTINATION include/LB/cloning
+	DESTINATION include/${PROJECT_NAME}
 )
 
 enable_testing()

@@ -4,7 +4,17 @@ This library is my personal take on the clone pattern. `CloneImplementor<>` uses
 
 _This library requires that your compiler support C++1z (the C++ standard after C++14)_
 
-## Making a class cloneable
+## Usage
+### CMake
+From the `cmake` directory, copy the `FindLB` directory to a place in your `CMAKE_MODULE_PATH`.
+Then, add `find_package(LB/cloning REQUIRED)` to your CMake script.
+You may need to set the CMake variable `LB/optional_ROOT` if you installed to a nonstandard location.
+Finally, link to the `LB::cloning` imported target with `target_link_libraries()`.
+
+### C++
+`#include <LB/cloning/cloning.hpp>`
+
+#### Making a class cloneable
 If you want to make a class cloneable, it and all its derived classes should derive from `CloneImplementor<>`.
 The template parameter is your deriving class, e.g. `CloneImplementor<MyClass>`.
 
@@ -28,7 +38,7 @@ private:
 You need to properly implement the protected copy constructor to account for parent classes and deriving classes.
 Note that abstract classes do not need to implement the `clone()` member function as it will never (should never) be used.
 
-## Cloning cloneable types
+#### Cloning cloneable types
 To properly clone an instance of a cloneable class, you need to call the static `Clone` member function from the class type you want the resulting clone to be accessible through:
 ```cpp
 void f(SomeDerivedType const &v) noexcept
