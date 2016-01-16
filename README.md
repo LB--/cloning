@@ -8,7 +8,7 @@ _This library requires that your compiler support C++1z (the C++ standard after 
 ### CMake
 From the `cmake` directory, copy the `FindLB` directory to a place in your `CMAKE_MODULE_PATH`.
 Then, add `find_package(LB/cloning REQUIRED)` to your CMake script.
-You may need to set the CMake variable `LB/optional_ROOT` if you installed to a nonstandard location.
+You may need to set the CMake variable `LB/cloning_ROOT` if you installed to a nonstandard location.
 Finally, link to the `LB::cloning` imported target with `target_link_libraries()`.
 
 ### C++
